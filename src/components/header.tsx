@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Session } from "next-auth";
-import { SessionProvider, getSession, useSession } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
 import { signIn, signOut } from "next-auth/react"
 
 const UserBar = () => {

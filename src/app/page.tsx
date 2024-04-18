@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { getSession } from "next-auth/react";
 import { Metadata } from "next/types";
 
 export const metadata: Metadata = {
