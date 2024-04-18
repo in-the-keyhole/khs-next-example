@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Session } from "next-auth";
+import { Header } from "@keyhole/components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,12 +13,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  session,
 }: Readonly<{
   children: React.ReactNode;
+  session: Session | null;
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Header session={session}/>
+        {children}
+      </body>
     </html>
   );
 }
