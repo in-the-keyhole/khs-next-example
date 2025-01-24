@@ -1,6 +1,3 @@
-import { authOptions } from "@keyhole/config/auth";
-import NextAuth from "next-auth";
+import { authHandler } from "@keyhole/controllers/ApiController";
 
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST }
+export { authHandler as GET, authHandler as POST }
