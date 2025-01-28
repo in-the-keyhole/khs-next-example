@@ -1,5 +1,5 @@
 import NextAuth, { AuthOptions, getServerSession as _getServerSession } from "next-auth";
-import GithubProvider, { GithubProfile } from "next-auth/providers/github"
+import GithubProvider, { GithubProfile } from "next-auth/providers/github";
 
 const authOptions: AuthOptions = {
   providers: [

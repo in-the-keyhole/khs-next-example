@@ -1,13 +1,28 @@
 import { getServerSession } from "@keyhole/services/AuthService";
 import { redirect } from "next/navigation";
+import { signIn, signOut } from "next-auth/react"
 
-export const getHomePageProps = async () => {
+export const getPublicPageProps  = async () => {
   const session = await getServerSession();
 
   return {
     name: session?.user?.name ?? undefined,
   };
 };
+
+export const getPrivatePageProps  = async () => {
+  const session = await getServerSession();
+
+  if (!session) {
+    redirect(`/`)
+  }
+  
+  return {
+    name: session?.user?.name ?? undefined,
+  };
+};
+
+
 export const getGithubPageProps = async () => {
   const session = await getServerSession();
 
@@ -42,4 +57,9 @@ export const getGithubPageProps = async () => {
 
 
   return props;
+}
+
+export {
+  signIn,
+  signOut,
 }
