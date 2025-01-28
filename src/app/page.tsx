@@ -1,4 +1,4 @@
-import { getHomePageProps } from "@keyhole/controllers/PageController";
+import { getPublicPageProps  } from "@keyhole/controllers/PageController";
 import Image from "next/image";
 import { Metadata } from "next/types";
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 
 export default async function Home() {
-  const { name } = await getHomePageProps();
+  const { name } = await getPublicPageProps ();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
