@@ -12,8 +12,8 @@ export default async function Home() {
   const { name } = await getPublicPageProps ();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm flex flex-col">
+    <main className="flex min-h-screen flex-col items-center justify-center pt-20 px-8 pb-8">
+      <div className="flex flex-col items-center">
           <Image className="" src="/keyhole.svg" alt="Keyhole Logo" width={480} height={192} priority/>
           <h1 className="p-2 text-3xl font-bold text-center">Welcome to Keyhole Next{name && `, ${name}`}!</h1>
           <p className="text-center mt-4">

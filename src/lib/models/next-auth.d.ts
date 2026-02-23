@@ -13,6 +13,8 @@ declare module "next-auth" {
       provider: string,
       accountId: string,
       token: string,
+      roles?: string[],
+      jsessionid?: string,
     }
   }
 }
