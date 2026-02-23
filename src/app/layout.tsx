@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Session } from "next-auth";
-import { Header } from "@keyhole/components/header";
+import { Header } from "@keyhole/lib/components/organisms/header";
 
 const inter = Inter({ subsets: ["latin"] });
 

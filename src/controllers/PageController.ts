@@ -1,13 +1,15 @@
 import { getServerSession } from "@keyhole/services/AuthService";
+import { getGithubUserData } from "@keyhole/services/GithubService";
 import { redirect } from "next/navigation";
 import { signIn, signOut } from "next-auth/react"
+import { PublicPageProps, PrivatePageProps, GithubPageProps } from "@keyhole/lib/models/pageProps";
 
 export const getPublicPageProps  = async () => {
   const session = await getServerSession();
 
   return {
     name: session?.user?.name ?? undefined,
-  };
+  } as PublicPageProps;
 };
 
 export const getPrivatePageProps  = async () => {
@@ -19,44 +21,24 @@ export const getPrivatePageProps  = async () => {
   
   return {
     name: session?.user?.name ?? undefined,
-  };
+  } as PrivatePageProps;
 };
 
 
-export const getGithubPageProps = async () => {
+export const getGithubPageProps = async (): Promise<GithubPageProps> => {
   const session = await getServerSession();
 
   if (!session) {
-    redirect(`/`)
+    redirect('/');
   }
 
-  const { githubLogin } = session?.user;
+  const { githubLogin } = session.user;
 
   if (!githubLogin) {
-    redirect(`/`)
+    redirect('/');
   }
 
-  const githubUserApiUrl = `https://api.github.com/users/${githubLogin}`;
-  const githubApiOptions = { 
-    headers: {
-      Authorization: `Bearer ${session.auth.token}`,
-    }
-  };
-  const [
-    profileResponse,
-    eventsResponse,
-  ] = await Promise.all([
-    fetch(githubUserApiUrl, githubApiOptions),
-    fetch(`${githubUserApiUrl}/events`, githubApiOptions)
-  ]);
-
-  const props = {
-    profile: await profileResponse.json(),
-    events: await eventsResponse.json(),
-  };
-
-
-  return props;
+  return getGithubUserData(githubLogin, session.auth.token);
 }
 
 export {

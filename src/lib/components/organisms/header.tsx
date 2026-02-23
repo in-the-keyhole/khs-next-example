@@ -1,10 +1,11 @@
 "use client";
-import Image from "next/image";
 import { Session } from "next-auth";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
+import { AvatarImage } from "@keyhole/lib/components/atoms/avatar-image";
+import { NavLink } from "@keyhole/lib/components/molecules/nav-link";
 
 const UserBar = () => {
-  const { data: session, status, update } = useSession();
+  const { data: session, status } = useSession();
 
   return (
     <div
@@ -13,17 +14,11 @@ const UserBar = () => {
       {status === "authenticated" && session?.user?.image ? (
         <>
           <div>
-            <Image
-              className="rounded-full"
-              src={session?.user?.image}
-              alt={"Profile Image"}
-              height={48}
-              width={48}
-            />
+            <AvatarImage src={session.user.image} alt="Profile Image" />
           </div>
-          <p className="p-3">{session?.user?.name}</p>
-          <a href="/"><p className="p-3">Home Page</p></a>
-          {session?.user?.githubLogin && <a href="/github"><p className="p-3">Github Info</p></a>}
+          <p className="p-3">{session.user.name}</p>
+          <NavLink href="/">Home Page</NavLink>
+          {session.user.githubLogin && <NavLink href="/github">Github Info</NavLink>}
           <button className={'ml-auto p-3'} onClick={() => signOut()}>
             Logout
           </button>
@@ -32,7 +27,7 @@ const UserBar = () => {
         <>
           <div className="p-2 text-3xl">👤</div>
           <p className="px-2 py-3">Guest</p>
-          <a href="/"><p className="p-3">Home Page</p></a>
+          <NavLink href="/">Home Page</NavLink>
           <button className={'ml-auto p-3'} onClick={() => signIn()}>
             Login
           </button>
