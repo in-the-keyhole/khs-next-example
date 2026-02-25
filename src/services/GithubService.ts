@@ -1,3 +1,4 @@
+import { GithubProfile } from "next-auth/providers/github";
 import { GithubEvent } from "@keyhole/lib/models/pageProps";
 
 const GITHUB_API_BASE = 'https://api.github.com';
@@ -8,7 +9,7 @@ const githubApiOptions = (token: string) => ({
   },
 });
 
-export const getGithubProfile = async (login: string, token: string): Promise<any> => {
+export const getGithubProfile = async (login: string, token: string): Promise<GithubProfile> => {
   const response = await fetch(`${GITHUB_API_BASE}/users/${login}`, githubApiOptions(token));
   return response.json();
 };

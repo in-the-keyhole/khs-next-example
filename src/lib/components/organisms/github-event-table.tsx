@@ -1,8 +1,6 @@
 import { SectionHeading } from "@keyhole/lib/components/atoms/section-heading";
 import { GithubEvent } from "@keyhole/lib/models/pageProps";
 
-export type { GithubEvent };
-
 export const GithubEventTable = ({ events }: { events: GithubEvent[] }) => (
   <div className="p-2 flex flex-col">
     <SectionHeading>Recent Events</SectionHeading>

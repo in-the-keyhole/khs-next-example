@@ -6,8 +6,10 @@ export interface PrivatePageProps {
     name?: string;
 }
 
+import { GithubProfile } from "next-auth/providers/github";
+
 export interface GithubPageProps {
-    profile: any;
+    profile: GithubProfile;
     events: GithubEvent[];
 }
 

@@ -1,5 +1,4 @@
-import NextAuth, { DefaultSession } from "next-auth"
-import { GithubProfile } from "next-auth/providers/github"
+import { DefaultSession } from "next-auth"
 
 declare module "next-auth" {
   /**
