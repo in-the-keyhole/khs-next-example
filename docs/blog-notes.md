@@ -10,38 +10,21 @@ Companion repo: https://github.com/in-the-keyhole/khs-next-example
 
 - Recap the previous article: GitHub OAuth with NextAuth.js in Next.js
 - Problem: UI is tightly coupled to auth/data — hard to iterate on components in isolation
-- Solution: Storybook lets you develop, document, and test UI components without a running back end
-- What the article covers: refactor → organize → install → style → stories → test
+- Solution: decompose into a component library first, then wrap it with Storybook
+- What the article covers: organize → isolate → install → style → stories → test
 - Stack: Next.js 15, Tailwind CSS v3, NextAuth.js v4, **Storybook 10** (`@storybook/nextjs-vite`), Vitest 4
 
-**References:**
-- [Storybook — What is it?](https://storybook.js.org/docs/get-started/why-storybook)
-- [Storybook for Next.js with Vite](https://storybook.js.org/docs/get-started/frameworks/nextjs-vite)
+### 1.1 Upgrading Dependencies
+
+- Check that NextAuth.js v4 still works (it does); note Auth.js v5 migration guide for those who want it
+- Verify Node.js (LTS) and npm versions; upgrade via `nvm install --lts && nvm use --lts`
+- Upgrade Next.js, React, React DOM: `npm install next@latest react@latest react-dom@latest`
+- Run `npm audit fix`; use `--force` in dev to keep dependencies current, manually review in production
+- Confirm `package.json` scripts still build and run before proceeding
 
 ---
 
-## 2. Preparing Your React Project — Component Isolation
-
-**Key principle:** Components that call services, read from context, or use hooks with external dependencies cannot render in Storybook without mocking infrastructure. Prefer props.
-
-- Before: `Header` calls `useSession()` directly → requires `SessionProvider` to be in the tree
-- After: `Header` accepts `session: Session | null` as a prop → `SessionProvider` is initialized with that value → `useSession()` still works internally, no mocking needed
-- Pattern: push external state to props at the organism/page boundary; internal sub-components can still use hooks
-
-**Code reference:** `src/lib/components/organisms/header.tsx:44`
-
-```tsx
-// The outer component accepts session as a prop
-export const Header = ({ session }: { session: Session | null }) => (
-  <SessionProvider session={session}>
-    <UserBar />   {/* UserBar still calls useSession() internally */}
-  </SessionProvider>
-);
-```
-
----
-
-## 3. Creating a UI Component Library — Atomic Design
+## 2. Creating a Component Library — Atomic Design
 
 Move all UI to `src/lib/components/` to separate presentational code from routing, services, and controllers. Structure using **Atomic Design**:
 
@@ -62,7 +45,23 @@ Move all UI to `src/lib/components/` to separate presentational code from routin
 
 ---
 
-## 4. Storybook Installation
+## 3. What is Storybook?
+
+Brief background before installation:
+
+- Launched in 2016 as React Storybook; became framework-agnostic
+- Originally used Webpack — slow startup on large component libraries
+- Vite (2020, Evan You) brought ESM-native dev builds with near-instant HMR
+- Storybook added Vite support in v7; `@storybook/nextjs-vite` is the recommended integration for Next.js as of Storybook 10
+- Gives you the full Next.js environment (App Router, image optimization, fonts) inside an isolated component sandbox
+
+**References:**
+- [Storybook — What is it?](https://storybook.js.org/docs/get-started/why-storybook)
+- [Storybook for Next.js with Vite](https://storybook.js.org/docs/get-started/frameworks/nextjs-vite)
+
+---
+
+## 5. Storybook Installation
 
 ```bash
 npm create storybook@latest
@@ -81,7 +80,7 @@ npm create storybook@latest
 
 ---
 
-## 5. Wiring Up Tailwind CSS
+## 6. Wiring Up Tailwind CSS
 
 Two required changes — without them components render unstyled:
 
@@ -107,7 +106,7 @@ content: [
 
 ---
 
-## 6. Writing Stories — CSF3 Format
+## 7. Writing Stories — CSF3 Format
 
 Every story file follows **Component Story Format 3 (CSF3)**:
 
@@ -139,7 +138,7 @@ export const Default: Story = {
 
 ---
 
-## 7. Stories at Each Level
+## 8. Stories at Each Level
 
 ### Atoms
 Simple: vary the `children` content. Example: `SectionHeading.stories.ts`
@@ -175,7 +174,7 @@ Compose organisms with shared mock data (see §8). Example: `GithubPage.stories.
 
 ---
 
-## 8. Shared Fixtures
+## 9. Shared Fixtures
 
 Extract repeated mock data into a shared fixtures file:
 
@@ -196,7 +195,7 @@ Benefit: update once, all stories reflect the change.
 
 ---
 
-## 9. Running Stories as Automated Tests with Vitest
+## 10. Running Stories as Automated Tests with Vitest
 
 `@storybook/addon-vitest` turns every story into a browser test running in real Chromium (via Playwright). Storybook recommends browser mode over JSDom/HappyDom for accuracy.
 
@@ -240,9 +239,9 @@ a11y: { test: 'todo' }   // 'todo' | 'error' (fail CI) | 'off'
 
 ---
 
-## 10. Conclusion
+## 11. Conclusion
 
-- Summary: isolate → decompose → install → style → write stories → test
+- Summary: organize → isolate → install → style → write stories → test
 - Storybook as a living component catalog the whole team can browse
 - Link to companion repo
 - Future topics: [Chromatic](https://www.chromatic.com/) for visual regression CI, MDX component docs

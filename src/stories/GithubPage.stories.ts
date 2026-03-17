@@ -23,7 +23,7 @@ export const FullProfile: Story = {
 
 export const NoLocation: Story = {
   args: {
-    profile: { name: 'Jane Doe', login: 'janedoe', html_url: 'https://github.com/janedoe' },
+    profile: { ...mockProfile, location: null },
     events: mockEvents,
   },
 };

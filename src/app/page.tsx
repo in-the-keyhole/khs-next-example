@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 
 export default async function HomePageView() {
-  const { name } = await getPublicPageProps ();
+  const props= await getPublicPageProps ();
 
-  return (<HomePage name={name} />);
+  return (<HomePage {...props} />);
 }
